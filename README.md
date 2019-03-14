@@ -70,8 +70,8 @@ int main() {
         char dari[1000];
 
         memset(file_baru, '\0', sizeof(file_baru));
-        memset(tambahan, '\0', sizeof(file_baru));
-        memset(dari, '\0', sizeof(file_baru));
+        memset(tambahan, '\0', sizeof(tambahan));
+        memset(dari, '\0', sizeof(dari));
         
         strcpy(dari, "/home/yasinta/Pictures/");
         strcat(dari, isi->d_name);
@@ -111,3 +111,29 @@ int main() {
 + `chdir("/home/yasinta/");`merubah direktori ke suatu path spesifik
 + `folder=opendir("Pictures");`variable untuk membuka folder Picture yaitu direktory asalah dari gambar yang akan di pindah
 + `while((isi=readdir(folder)) != NULL)' mengecek apakah dalam folter tersebut ada isinya atau tidak jika ada akan menjalankan perintah di bawahnya`
++ ` panjang = panjang_string - 4;` variabel untuk menampung panjang karakter dari nama gambar tanpa ekstensi .pgn.
++ `memset` membuat agar kondisi awal dari aray menjadi kosong
++ `strcpy(dari, "/home/yasinta/Pictures/");` path sumber dari file gambar yang akan di pindah
++ `strcat(dari, isi->d_name);` menggabungkan path sumber dan nama file
++ `strcpy(file_baru, "/home/yasinta/modul2/gambar/");` path tujuan dari file gambar
++ `strncat(file_baru, isi->d_name, panjang);` menggabungkan path tujuan dan nama file tanpa ekstensi. Misal /home/yasinta/Picture/topi
++ `strcpy(tambahan, "_grey.png");` untuk menambahkan karakter *_grey.png* di belakang nama gambar
++ `strcat(file_baru, tambahan);` variable file baru nantinya berisi path tujuan dan nama filenya. Misal /home/yasinta/modul2/gambar/topi_grey.png
+
+**wait, fork dan exec dalam main program**
+```
+pid_t child_id;
+  int status;
+  
+  child_id = fork();
+
+  if (child_id == 0) {
+     char *argv[4] = {"mv", dari, file_baru, NULL};
+     execv("/bin/mv", argv);
+   }
+  else{
+    while ((wait(&status)) > 0);
+   }
+```
++ `char *argv[4] = {"mv", dari, file_baru, NULL};` memindahkan file gambar dari direktori `/home/yasinta/Picture/(nama_file)` ke `/home/yasinta/modul2/gambar/(nama_file)_grey.png`
++ `while ((wait(&status)) > 0);` parent akan menunggu sampai proses pada child selesai
