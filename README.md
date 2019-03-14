@@ -10,7 +10,7 @@
 Karena tidak diperbolehkan menggunakan crontab kita berasumsi menggunakan daemon agar file yang berekstensi .png dalam suatu folder dipindah ke /home/user/modul2/gambar secara realtime.
 
 ### Program C
-```
+```c
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
