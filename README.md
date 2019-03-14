@@ -105,3 +105,9 @@ int main() {
 }
 ```
 #### Penjelasan
+**Main Program**
++ `DIR *folder;` variable dngan nama folder dengan tipe data DIR
++ `struct dirent *isi;`adalah variable di dalam variable yang mempunyai mempunyai tipe data tertentu dalam hal ini tipe data yang digunakan adalah d_name dan d_type
++ `chdir("/home/yasinta/");`merubah direktori ke suatu path spesifik
++ `folder=opendir("Pictures");`variable untuk membuka folder Picture yaitu direktory asalah dari gambar yang akan di pindah
++ 
