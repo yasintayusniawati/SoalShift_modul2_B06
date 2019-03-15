@@ -146,7 +146,7 @@ Garis besar soal :
   + Karena tidak boleh menggunakan crontab maka menggunakan daemon yang berjalan setiap 3 detik
 
 ### Program C
-```
+```c
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -229,32 +229,32 @@ int main() {
 + `DIR *folder;` variable dengan nama **folder** dengan tipe data DIR
 + `struct dirent *isi;` isi adalah nama variable yang menampung file *elen.ku*
 + Untuk menentukan programnya akan dijalankan dimana gunakan chdir. karena program ini berada di */home/yasinta/Documents/praktikum2/soal2* dan path ini nantinya akan dibutuhkan untuk menjalankan program dibawahnya sehingga commandnya menjadi :
-```
+```c
 chdir("/home/yasinta/Documents/praktikum2/soal2/");
 ```
 + `folder=opendir("hatiku");` variable untuk membuka folder **hatiku**
 + `strcmp(isi->d_name,"elen.ku")` digunakan untuk membandingkan nama file. Jika didalam folder hatiku ada file yang bernama elen.ku maka akan menjalankan program di bawahnya
 + Digunakan stat agar mendapatkan informasi dari suatu file yaitu elenku dalam hal ini kita membutuhkan informasi mengenai user id dan group id. Fungsi bawaan stat adalah hasilnya dimasukkan ke dalam struct stat
-```
+```c
 stat("hatiku/elen.ku",&infofile);
 ```
 + Karena fungsi stat hanya memberikan informasi userId dan groupId sehingga diperlukan suatu fungsi untuk mengubah dari userID/groupId menjadi nama dari user dan groupnya, sehingga bisa menggunakan **struct passwd** :
   + untuk user
-  ```
+  ```c
   struct passwd *user; // berisi nama dari uid
   user = getpwuid(infofile.st_uid);
   ```
   getpwuid untuk ngambil detail informasi dari user id dan harus disimpan di struct passwd, variabel pw_name
   
   + untuk group
-  ```
+  ```c
    struct group *grup; //berisi nama dari gid
    grup = getgrgid(infofile.st_gid);
   ```
   getgrgid untuk ngambil detail informasi dari group id dan harus disimpan di struct group, variabel gr_name
 
 + selanjutnya gunakan strcmp untuk membandingkan jika file tersebut memiliki user dan group **www-data** akan di hapus dengan bantuan chmod
-```
+```c
 if( strcmp(user->pw_name,"www-data") == 0 && strcmp(grup->gr_name,"www-data") == 0){
    chmod("hatiku/elen.ku", 0777);
    remove("hatiku/elen.ku");
