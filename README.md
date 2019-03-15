@@ -253,7 +253,7 @@ stat("hatiku/elen.ku",&infofile);
   ```
   getgrgid untuk ngambil detail informasi dari group id dan harus disimpan di struct group, variabel gr_name
 
-+ selanjutnya gunakan strcmp untuk membandingkan jika file tersebut memiliki user dan group **www-data** akan di hapus dengan bantuan chmod
++ selanjutnya gunakan strcmp untuk membandingkan jika file tersebut memiliki user dan group **www-data** akan di hapus dengan bantuan chmod. chmod 0777 dengan 0 didepan berati sebuah file dengan modenya dibuat menjadi read, write dan execute. Untuk menghapus file menggunakan remove.
 ```c
 if( strcmp(user->pw_name,"www-data") == 0 && strcmp(grup->gr_name,"www-data") == 0){
    chmod("hatiku/elen.ku", 0777);
