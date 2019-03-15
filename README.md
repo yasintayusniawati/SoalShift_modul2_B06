@@ -145,4 +145,117 @@ Garis besar soal :
   + Untuk menghapus filenya permissionnya diubah menjadi 777
   + Karena tidak boleh menggunakan crontab maka menggunakan daemon yang berjalan setiap 3 detik
 
+### Program C
+```
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <sys/dir.h>
+#include <dirent.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <syslog.h>
+#include <string.h>
+#include <grp.h>
+#include <pwd.h>
 
+int main() {
+  pid_t pid, sid;
+
+  pid = fork();
+
+  if (pid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  if (pid > 0) {
+    exit(EXIT_SUCCESS);
+  }
+
+  umask(0);
+
+  sid = setsid();
+
+  if (sid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  if ((chdir("/")) < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  close(STDIN_FILENO);
+  close(STDOUT_FILENO);
+  close(STDERR_FILENO);
+
+  while(1) {
+  DIR *folder;
+  struct dirent *isi;
+
+  struct stat infofile;
+
+  chdir("/home/yasinta/Documents/praktikum2/soal2/"); //menentukan programnya akan jalan dimana
+  folder=opendir("hatiku");
+  while((isi=readdir(folder)) != NULL){
+      if(strcmp(isi->d_name,"elen.ku") == 0){
+
+          stat("hatiku/elen.ku",&infofile); //mendapatkan informasi nomor user id dan nomor group id
+
+          //ngambil nama user
+          struct passwd *user; // berisi nama dari uid
+          user = getpwuid(infofile.st_uid); //getpwuid untuk ngambil detail informasi dari user id dan harus disimpan di struct passwd, variabel pw_name
+           //ngambil nama group
+            struct group *grup; //berisi nama dari gid
+            grup = getgrgid(infofile.st_gid);//getgrgid untuk ngambil detail informasi dari group id dan harus disimpan di struct group, variabel gr_name
+            // printf("%s %s\n", user->pw_name,grup->gr_name);
+            if( strcmp(user->pw_name,"www-data") == 0 && strcmp(grup->gr_name,"www-data") == 0){
+              chmod("hatiku/elen.ku", 0777);
+              remove("hatiku/elen.ku");
+            }
+      }    
+  }
+   closedir(folder);
+
+   sleep(3);
+  }
+  
+  exit(EXIT_SUCCESS);
+}
+```
+#### Penjelasan 
++ `DIR *folder;` variable dengan nama **folder** dengan tipe data DIR
++ `struct dirent *isi;` isi adalah nama variable yang menampung file *elen.ku*
++ Untuk menentukan programnya akan dijalankan dimana gunakan chdir. karena program ini berada di */home/yasinta/Documents/praktikum2/soal2* dan path ini nantinya akan dibutuhkan untuk menjalankan program dibawahnya sehingga commandnya menjadi :
+```
+chdir("/home/yasinta/Documents/praktikum2/soal2/");
+```
++ `folder=opendir("hatiku");` variable untuk membuka folder **hatiku**
++ `strcmp(isi->d_name,"elen.ku")` digunakan untuk membandingkan nama file. Jika didalam folder hatiku ada file yang bernama elen.ku maka akan menjalankan program di bawahnya
++ Digunakan stat agar mendapatkan informasi dari suatu file yaitu elenku dalam hal ini kita membutuhkan informasi mengenai user id dan group id. Fungsi bawaan stat adalah hasilnya dimasukkan ke dalam struct stat
+```
+stat("hatiku/elen.ku",&infofile);
+```
++ Karena fungsi stat hanya memberikan informasi userId dan groupId sehingga diperlukan suatu fungsi untuk mengubah dari userID/groupId menjadi nama dari user dan groupnya, sehingga bisa menggunakan **struct passwd** :
+  + untuk user
+  ```
+  struct passwd *user; // berisi nama dari uid
+  user = getpwuid(infofile.st_uid);
+  ```
+  getpwuid untuk ngambil detail informasi dari user id dan harus disimpan di struct passwd, variabel pw_name
+  
+  + untuk group
+  ```
+   struct group *grup; //berisi nama dari gid
+   grup = getgrgid(infofile.st_gid);
+  ```
+  getgrgid untuk ngambil detail informasi dari group id dan harus disimpan di struct group, variabel gr_name
+
++ selanjutnya gunakan strcmp untuk membandingkan jika file tersebut memiliki user dan group **www-data** akan di hapus dengan bantuan chmod
+```
+if( strcmp(user->pw_name,"www-data") == 0 && strcmp(grup->gr_name,"www-data") == 0){
+   chmod("hatiku/elen.ku", 0777);
+   remove("hatiku/elen.ku");
+```
