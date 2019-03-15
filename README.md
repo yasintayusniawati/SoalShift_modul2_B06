@@ -139,8 +139,10 @@ pid_t child_id;
 + `while ((wait(&status)) > 0);` parent akan menunggu sampai proses pada child selesai
 
 ## No 2
-Pada suatu hari Kusuma dicampakkan oleh Elen karena Elen dimenangkan oleh orang lain. Semua kenangan tentang Elen berada pada file bernama “elen.ku” pada direktori “hatiku”. Karena sedih berkepanjangan, tugas kalian sebagai teman Kusuma adalah membantunya untuk menghapus semua kenangan tentang Elen dengan membuat program C yang bisa mendeteksi owner dan group dan menghapus file “elen.ku” setiap 3 detik dengan syarat ketika owner dan grupnya menjadi “www-data”. Ternyata kamu memiliki kendala karena permission pada file “elen.ku”. Jadi, ubahlah permissionnya menjadi 777. Setelah kenangan tentang Elen terhapus, maka Kusuma bisa move on.
-Catatan: Tidak boleh menggunakan crontab
-
-Berdasarkan soal no 2. Langkah yang dibutuhkan adalah :
-<
+Garis besar soal :
+<ol type="a">
+  <li> Membuat direktori bernama **hatiku** `mkdir hatiku`dan membuat file bernama **elen.ku** `touch elen.ku`
+  <li> Menghapus file **elen.ku** dalam program C dengan syarat owner dan groupnya bernama **www-data**
+  <li> Untuk menghapus filenya permissionnya diubah menjadi 777
+  <li> Karena tidak boleh menggunakan crontab maka menggunakan daemon yang berjalan setiap 3 detik
+</ol>
