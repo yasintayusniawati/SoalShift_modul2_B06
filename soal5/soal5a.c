@@ -54,7 +54,7 @@ int main() {
 	char dirpath[100]= "/home/bima/log/";
 	static int i = 0;
 
-	if(i%30==0){
+	if(i%1800==0){
 		sprintf(judul,"%02d:%02d:%d-%02d:%02d",tm.tm_mday,tm.tm_mon + 1,tm.tm_year + 1900,tm.tm_hour, tm.tm_min);
 	}
 
@@ -76,7 +76,7 @@ int main() {
 		    execv("/bin/cp", argv);
 	}
 
-  sleep(1);
+  sleep(60);
 
   }
 
