@@ -121,7 +121,7 @@ int main() {
 + `strcat(file_baru, tambahan);` variable file baru nantinya berisi path tujuan dan nama filenya. Misal /home/yasinta/modul2/gambar/topi_grey.png
 
 **wait, fork dan exec dalam main program**
-```
+```c
 pid_t child_id;
   int status;
   
@@ -137,3 +137,10 @@ pid_t child_id;
 ```
 + `char *argv[4] = {"mv", dari, file_baru, NULL};` memindahkan file gambar dari direktori `/home/yasinta/Picture/(nama_file)` ke `/home/yasinta/modul2/gambar/(nama_file)_grey.png`
 + `while ((wait(&status)) > 0);` parent akan menunggu sampai proses pada child selesai
+
+## No 2
+Pada suatu hari Kusuma dicampakkan oleh Elen karena Elen dimenangkan oleh orang lain. Semua kenangan tentang Elen berada pada file bernama “elen.ku” pada direktori “hatiku”. Karena sedih berkepanjangan, tugas kalian sebagai teman Kusuma adalah membantunya untuk menghapus semua kenangan tentang Elen dengan membuat program C yang bisa mendeteksi owner dan group dan menghapus file “elen.ku” setiap 3 detik dengan syarat ketika owner dan grupnya menjadi “www-data”. Ternyata kamu memiliki kendala karena permission pada file “elen.ku”. Jadi, ubahlah permissionnya menjadi 777. Setelah kenangan tentang Elen terhapus, maka Kusuma bisa move on.
+Catatan: Tidak boleh menggunakan crontab
+
+Berdasarkan soal no 2. Langkah yang dibutuhkan adalah :
+<
