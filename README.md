@@ -434,7 +434,6 @@ int main() {
 	}
 
   sleep(60);
-
   }
 
   exit(EXIT_SUCCESS);
