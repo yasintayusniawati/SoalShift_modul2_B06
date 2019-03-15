@@ -259,3 +259,94 @@ if( strcmp(user->pw_name,"www-data") == 0 && strcmp(grup->gr_name,"www-data") ==
    chmod("hatiku/elen.ku", 0777);
    remove("hatiku/elen.ku");
 ```
+## No 4
+
+### Program C
+```
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <syslog.h>
+#include <string.h>
+#include <time.h>
+#include <sys/sysmacros.h>
+
+int main() {
+  pid_t pid, sid;
+
+  pid = fork();
+
+  if (pid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  if (pid > 0) {
+    exit(EXIT_SUCCESS);
+  }
+
+  umask(0);
+
+  sid = setsid();
+
+  if (sid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+if ((chdir("/home/bima")) < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  close(STDIN_FILENO);
+  close(STDOUT_FILENO);
+  close(STDERR_FILENO);
+
+  int counter=1;
+
+  while(1)
+  {
+   char dirpath[100]= "/home/bima/Documents/makanan/makan_enak.txt";
+   struct stat makanEnak;
+   stat(dirpath, &makanEnak);
+
+   time_t now;
+   time(&now);
+   time_t lastAccess=makanEnak.st_atime;
+
+   	if(difftime(now, lastAccess) <= 30)
+   	{
+       		char newFile[200];
+		      char addCounter[50];
+       		strcpy(newFile, "/home/bima/Documents/makanan/makan_sehat");
+
+       		sprintf(addCounter, "%d", counter);
+       		strcat(newFile, addCounter);
+       		strcat(newFile, ".txt");
+
+		FILE *no4File;
+       		no4File = fopen(newFile, "w");
+       		fclose(no4File);
+   	    	counter++;
+		//sleep(5);
+   	}
+    sleep(5);
+    }
+    exit(EXIT_SUCCESS);
+}
+```
+#### Penjelasan 
++ `char dirpath[100]= "/home/bima/Documents/makanan/makan_enak.txt";` variabel tempat menyimpan direktori makan_enak.txt
++ `time_t now;` variabel tempat menyimpan waktu sekarang
++ `time_t lastAccess=makanEnak.st_atime;` variabel tempat menyimpan waktu akses terakhir
++ `if(difftime(now, lastAccess) <= 30)` membandingkan waktu sistem sekarang dan waktu akses terakhir, jika kurang dari atau sama dengan 30 maka masuk ke dalam if
++ `strcpy(newFile, "/home/bima/Documents/makanan/makan_sehat");` mengcopy kan /home/bima/Documents/makanan/makan_sehat ke suatu variabel bernama newFile, yang nantinya output akhirnya sebagai makan_sehat.txt
++ `sprintf(addCounter, "%d", counter);` printf dengan parameter counter
++ `strcat(newFile, addCounter);` menambahkan counter ke nama file dari newFile 
++ `strcat(newFile, ".txt");` menambahkan .txt ke newFile
++  `FILE *no4File;` deklarasikan sebuah file
++ `no4File = fopen(newFile, "w");` buka sebuah file no4File dengan parameter file adalah newFile dan modenya write
++ `fclose(no4File);` meenutup file
++ `sleep(5);` program daemon akan berjalan setiap 5 detik   
