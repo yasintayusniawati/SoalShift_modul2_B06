@@ -140,9 +140,9 @@ pid_t child_id;
 
 ## No 2
 Garis besar soal :
-<ol type="a">
-  <li> Membuat direktori bernama **hatiku** `mkdir hatiku`dan membuat file bernama **elen.ku** `touch elen.ku`
-  <li> Menghapus file **elen.ku** dalam program C dengan syarat owner dan groupnya bernama **www-data**
-  <li> Untuk menghapus filenya permissionnya diubah menjadi 777
-  <li> Karena tidak boleh menggunakan crontab maka menggunakan daemon yang berjalan setiap 3 detik
-</ol>
+  + Membuat direktori bernama **hatiku** `mkdir hatiku`dan membuat file bernama **elen.ku** `touch elen.ku`
+  + Menghapus file **elen.ku** dalam program C dengan syarat owner dan groupnya bernama **www-data**
+  + Untuk menghapus filenya permissionnya diubah menjadi 777
+  + Karena tidak boleh menggunakan crontab maka menggunakan daemon yang berjalan setiap 3 detik
+
+
