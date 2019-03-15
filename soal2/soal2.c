@@ -71,7 +71,6 @@ int main() {
    closedir(folder);
 
    sleep(3);
-  }
-  
+  } 
   exit(EXIT_SUCCESS);
 }
